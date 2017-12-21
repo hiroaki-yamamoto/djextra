@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+coverage==4.4.2
 detox==0.11
 django==2.0
 enum-compat==0.0.2        # via eventlet
