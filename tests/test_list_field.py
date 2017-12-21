@@ -82,3 +82,32 @@ class ListFieldDefaultTest(TestCase):
         """The cleaned data should be equal to payload."""
         self.assertTrue(self.form.is_valid())
         self.assertEqual(self.form.clean(), self.payload)
+
+
+class ListFieldValidateAndCastSuccessTest(TestCase):
+    """ListField field validation test."""
+
+    class TestForm(forms.Form):
+        """The form."""
+
+        name = forms.CharField()
+        families = extraforms.ListField(
+            fields=(
+                forms.CharField(), forms.EmailField(), forms.IntegerField()
+            )
+        )
+
+    def setUp(self):
+        """Setup."""
+        self.payload = {
+            "name": "Test",
+            "families": ["Mother", "mother@hysoftware.net", "49"]
+        }
+        self.form = self.TestForm(data=self.payload)
+
+    def test_cleaned_data(self):
+        """The cleaned data should be equal to payload."""
+        expected_result = self.payload.copy()
+        expected_result["families"][-1] = int(expected_result["families"][-1])
+        self.assertTrue(self.form.is_valid())
+        self.assertEqual(self.form.clean(), expected_result)
