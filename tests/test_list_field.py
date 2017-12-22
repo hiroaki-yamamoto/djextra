@@ -30,7 +30,7 @@ class ListFieldFalsyBehaviorTest(TestCase):
         """The cleaned data should be equal to payload."""
         result = self.payload.copy()
         result["families"] = []
-        self.assertTrue(self.form.is_valid())
+        self.assertTrue(self.form.is_valid(), dict(self.form.errors))
         self.assertEqual(self.form.clean(), result)
 
 
@@ -56,7 +56,7 @@ class ListFieldNonListPayloadBehaviorTest(TestCase):
         self.assertFalse(self.form.is_valid())
         self.assertEqual(dict(self.form.errors), {
             "families": [
-                extraforms.ListField.default_error_messages["invalid_list"]
+                self.form.fields["families"].error_messages["invalid_list"]
             ]
         })
 
@@ -80,7 +80,7 @@ class ListFieldDefaultTest(TestCase):
 
     def test_cleaned_data(self):
         """The cleaned data should be equal to payload."""
-        self.assertTrue(self.form.is_valid())
+        self.assertTrue(self.form.is_valid(), dict(self.form.errors))
         self.assertEqual(self.form.clean(), self.payload)
 
 
@@ -101,7 +101,7 @@ class ListFieldValidateAndCastSuccessTest(TestCase):
         """Setup."""
         self.payload = {
             "name": "Test",
-            "families": ["Mother", "mother@hysoftware.net", "49"]
+            "families": ["Mother", "mother@example.net", "49"]
         }
         self.form = self.TestForm(data=self.payload)
 
@@ -109,5 +109,43 @@ class ListFieldValidateAndCastSuccessTest(TestCase):
         """The cleaned data should be equal to payload."""
         expected_result = self.payload.copy()
         expected_result["families"][-1] = int(expected_result["families"][-1])
-        self.assertTrue(self.form.is_valid())
+        self.assertTrue(self.form.is_valid(), dict(self.form.errors))
         self.assertEqual(self.form.clean(), expected_result)
+
+
+class ListFieldValidationAndCastFailureTest(TestCase):
+    """ListField field validation failure test."""
+
+    class TestForm(forms.Form):
+        """The form."""
+
+        name = forms.CharField()
+        families = extraforms.ListField(
+            fields=(
+                forms.CharField(), forms.EmailField(), forms.IntegerField()
+            )
+        )
+
+    def setUp(self):
+        """Setup."""
+        self.payload = {
+            "name": "Test",
+            "families": ["Mother", "mother@example.", "xx"]
+        }
+        self.form = self.TestForm(data=self.payload)
+
+    def test_error(self):
+        """Should raise and error."""
+        self.assertFalse(self.form.is_valid())
+        self.assertEqual(dict(self.form.errors), {
+            "families": [
+                ("Index 1: {}").format(
+                    self.form.fields["families"]
+                        .fields[1].validators[0].message
+                ),
+                ("Index 2: {}").format(
+                    self.form.fields["families"].fields[2]
+                        .error_messages["invalid"]
+                )
+            ]
+        })

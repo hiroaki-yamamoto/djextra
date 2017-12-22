@@ -16,7 +16,7 @@ class ListField(forms.Field):
 
     def __init__(self, *args, **kwargs):
         """Init."""
-        self.fields = kwargs.pop("fields", None) or [super(ListField, self)]
+        self.fields = kwargs.pop("fields", None) or super(ListField, self)
         super(ListField, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
@@ -27,7 +27,27 @@ class ListField(forms.Field):
             raise forms.ValidationError(
                 self.error_messages["invalid_list"], code="invalid_list"
             )
-        return [
-            self.fields[index % len(self.fields)].to_python(item)
-            for (index, item) in enumerate(value)
-        ]
+        errors = []
+        normalize_values = []
+        if isinstance(self.fields, (list, tuple)):
+            for (index, el) in enumerate(value):
+                try:
+                    normalize_values.append(
+                        self.fields[index % len(self.fields)].clean(el)
+                    )
+                except forms.ValidationError as exc:
+                    for message in exc.messages:
+                        errors.append(
+                            forms.ValidationError(
+                                "Index %(index)s: %(error_msg)s", params={
+                                    "index": index,
+                                    "error_msg": message,
+                                    "error": exc
+                                }, code="invalid"
+                            )
+                        )
+        else:
+            normalize_values = [self.fields.to_python(item) for item in value]
+        if errors:
+            raise forms.ValidationError(errors, code="invalid")
+        return normalize_values
