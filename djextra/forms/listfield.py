@@ -16,7 +16,7 @@ class ListField(forms.Field):
 
     def __init__(self, *args, **kwargs):
         """Init."""
-        self.fields = kwargs.pop("fields", None) or super(ListField, self)
+        self.field = kwargs.pop("field", None) or super(ListField, self)
         super(ListField, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
@@ -29,25 +29,34 @@ class ListField(forms.Field):
             )
         errors = []
         normalize_values = []
-        if isinstance(self.fields, (list, tuple)):
-            for (index, el) in enumerate(value):
-                try:
-                    normalize_values.append(
-                        self.fields[index % len(self.fields)].clean(el)
-                    )
-                except forms.ValidationError as exc:
-                    for message in exc.messages:
-                        errors.append(
-                            forms.ValidationError(
-                                "Index %(index)s: %(error_msg)s", params={
-                                    "index": index,
-                                    "error_msg": message,
-                                    "error": exc
-                                }, code="invalid"
-                            )
-                        )
-        else:
-            normalize_values = [self.fields.to_python(item) for item in value]
+        for (index, item) in enumerate(value):
+            try:
+                normalize_values.append(self.field.to_python(item))
+            except forms.ValidationError as exc:
+                raise forms.ValidationError(
+                    "Index %(index)d: %(err_msg)s", params={
+                        "index": index,
+                        "err_msg": ("").join(exc.messages),
+                        "exception": exc
+                    }
+                )
         if errors:
             raise forms.ValidationError(errors, code="invalid")
         return normalize_values
+
+    # validate(self, value) function is reserved for the subclass of this
+    # class.
+
+    def run_validators(self, value):
+        """Validate the value."""
+        for (index, item) in enumerate(value):
+            try:
+                self.field.run_validators(item)
+            except forms.ValidationError as exc:
+                raise forms.ValidationError(
+                    "Index %(index)d: %(err_msg)s", params={
+                        "index": index,
+                        "err_msg": ("").join(exc.messages),
+                        "exception": exc
+                    }
+                )
