@@ -9,7 +9,8 @@ addons:
   apt:
     packages:
       - pandoc
-
+before_script:
+  - "pip install --upgrade coverage<4.4"
 script:
   - "detox"
 after_success:
