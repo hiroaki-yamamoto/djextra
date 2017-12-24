@@ -49,14 +49,19 @@ class ListField(forms.Field):
 
     def run_validators(self, value):
         """Validate the value."""
+        errors = []
         for (index, item) in enumerate(value):
             try:
                 self.field.run_validators(item)
             except forms.ValidationError as exc:
-                raise forms.ValidationError(
-                    "Index %(index)d: %(err_msg)s", params={
-                        "index": index,
-                        "err_msg": ("").join(exc.messages),
-                        "exception": exc
-                    }
-                )
+                errors.append([
+                    forms.ValidationError(
+                        "Index %(index)d: %(err_msg)s", params={
+                            "index": index,
+                            "err_msg": ("").join(exc.messages),
+                            "exception": exc
+                        }
+                    )
+                ])
+        if errors:
+            raise forms.ValidationError(errors, code="invalid")

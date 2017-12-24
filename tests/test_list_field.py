@@ -126,7 +126,7 @@ class ListFieldCastFailureTest(TestCase):
         """Setup."""
         self.payload = {
             "name": "Test",
-            "numbers": ["10", "20", "xx"]
+            "numbers": ["10", "20", "xx", "yy"]
         }
         self.form = self.TestForm(data=self.payload)
 
@@ -136,6 +136,9 @@ class ListFieldCastFailureTest(TestCase):
         self.assertEqual(dict(self.form.errors), {
             "numbers": [
                 ("Index 2: {}").format(
+                    self.form.fields["numbers"].field.error_messages["invalid"]
+                ),
+                ("Index 3: {}").format(
                     self.form.fields["numbers"].field.error_messages["invalid"]
                 )
             ]
@@ -155,7 +158,12 @@ class ListFieldValidationErrorTest(TestCase):
         """Setup."""
         self.payload = {
             "name": "Test",
-            "emails": ["test@example.com", "hello@example.com", "test"]
+            "emails": [
+                "test@example.com",
+                "hello@example.com",
+                "test",
+                "test@example."
+            ]
         }
         self.form = self.TestForm(data=self.payload)
 
@@ -165,6 +173,9 @@ class ListFieldValidationErrorTest(TestCase):
         self.assertEqual(dict(self.form.errors), {
             "emails": [
                 ("Index 2: {}").format(
+                    self.form.fields["emails"].field.validators[0].message
+                ),
+                ("Index 3: {}").format(
                     self.form.fields["emails"].field.validators[0].message
                 )
             ]

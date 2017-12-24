@@ -2,7 +2,7 @@
 
 source ./venv/bin/activate
 coverage erase
-if [ ${1} = "tox" ] ; then
+if [ "${1}" = "tox" ] ; then
   tox
 else
   detox
