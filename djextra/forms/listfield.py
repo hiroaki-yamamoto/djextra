@@ -33,13 +33,13 @@ class ListField(forms.Field):
             try:
                 normalize_values.append(self.field.to_python(item))
             except forms.ValidationError as exc:
-                raise forms.ValidationError(
+                errors.append(forms.ValidationError(
                     "Index %(index)d: %(err_msg)s", params={
                         "index": index,
                         "err_msg": ("").join(exc.messages),
                         "exception": exc
                     }
-                )
+                ))
         if errors:
             raise forms.ValidationError(errors, code="invalid")
         return normalize_values
