@@ -1,0 +1,23 @@
+language: python
+python:
+  - 3.6
+sudo: false
+cache:
+  apt: true
+  pip: true
+addons:
+  apt:
+    packages:
+      - pandoc
+
+script:
+  - "detox"
+after_success:
+  - "coverage erase"
+  - "coverage combine *.coverage"
+  - "coveralls"
+  - "codeclimate-test-reporter"
+before_deploy:
+  - "pandoc -f markdown -t rst -o README.rst README.md"
+  - "echo ${TRAVIS_TAG}"
+  - "sed -i -e \"s/\\[VERSION\\]/${TRAVIS_TAG}/\" setup.py"
