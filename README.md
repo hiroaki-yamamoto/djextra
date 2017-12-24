@@ -32,7 +32,7 @@ some code to support List validation.
 
 ## How To Use It
 
-### 1. ListField
+### ListField
 ListField is used to handle a list of values like above example.
 To use ListField, you can write a form like this:
 
