@@ -21,3 +21,33 @@ before_deploy:
   - "pandoc -f markdown -t rst -o README.rst README.md"
   - "echo ${TRAVIS_TAG}"
   - "sed -i -e \"s/\\[VERSION\\]/${TRAVIS_TAG}/\" setup.py"
+deploy:
+  provider: pypi
+  skip_cleanup: true
+  distributions: sdist
+  on:
+    tags: true
+  user:
+    secure: >-
+      Iev8wmW0kydMWgB0o8LtCy3P4LnMLct9DaPQGmXB1StNJ+TobZT7N0jQ6IwaS964/WbLxoR+
+      Kw04S0JlSlD0s7OgfSd5IIiiF6PJgE1nrHx7Dvbygo/QcMuhbzjpdRVqqtAAErDyVIsvrweS
+      99yCIwZmUHwo1+CkqN5IZyrIzzvKhWTtbDGjqni5TwlJe2HHC2hr65XO7u128QpSI45WX7VR
+      yRsVtYb5OsiYm3Ul3zCMxKKwKi2+AoDqg1z0dGzKsvUc0+kDNnefQaRU6xyBrnFfgZEO+hRL
+      znnT1WFYY9wRKqV3l7SmSEplfMKTuUIJyvG9Ew/iWc7fb72rUItL8RbI50CQXP2TrEpJ3pAR
+      Ynb8p/n85OO5GzZBVAspVsxgDnI/4O9K06BRbJO3EQSiGYyCDZ+hv2D52UVcajlnt8//ygYZ
+      6OqjfOrpbC/B3UJOYtnggrPz5yFDQ55z3qh4Q1JVKVSltkq4Qltritx14p/IBj8Hmnlrsizc
+      BsKr9SHiMjHnKsBwrSrllbsnO7Nc0pm1aVzLk+MarpOioIOqcrOeQVOwX+2bqzYcYzx98z/r
+      TLt4trwSRjifn/OVcK+jaJsrdei05aFOgQI+2ffdq9SZlH1bDNV6TyrVYCnpphODK75ez7Rr
+      aloLw+/7XiZ3t2FTAluEhvO7TdmaiSbJ/WE=
+  password:
+    secure: >-
+      faaSYDP0KfmkBkvov9+C70Vd5tGQWguew5/Fr6XjpurZuO1iiUCUOi/hNwca3149fRxeJIXh
+      RCGlFJ3N8Y+ZbJxwGuzJpVZ6NlN4poeFC+GpzCR7V2HXDxuhKTveEs3C0C3QTiydHuxzwq3W
+      FqhyaYEoO+zCYWJ/+owU0KCi4PLOt2Zh2uwiEGugVV2lgQIOUK520ab5Dp0eYN6o8gG5ZhtO
+      QRU5Vj6DeuGQMnCOinAQ2tjOv5rSM+VcvnCfaIVpw8lV2ykrd7C6JNWMOm1nKp3TvZQ05BpI
+      Qjf2ZuKsA4JMShOv8ZOEx5M/ZtBqyuJdQ+j+PLXmic5KJgOEx5zYfnULFlqYa1BGco5Xeb8J
+      WZrmJUwaZDG5VYrXnR6hM4nGzWaB8QF+GamLQYUJ8US++PNwoKPu20bjuNcbnKyMoBIMP7lr
+      8Fk3Zt3Dp2c9ctODjRmo4CK0wc7KM3AZbjAIR5WpbcHkvDd7dM8kBzBUit3A9RxBFQKImZmw
+      a6ehKOeiGC8HD2RGtxM9abBea5eCC3vA6g1KaZ2WJFwikxTt8hnOgDpumsi1PC4cRpkmQiIt
+      TWySjmdC/Jsxt1EHHRYezgtCvMxdyKl0iNnygZw5gSOGpDFe1Sna9n6OXmKFR1e5YR3tinjo
+      6r9ubjBF+/8BSmZb19gq8vTaIQrxy4p7wkg=
