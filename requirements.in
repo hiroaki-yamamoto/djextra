@@ -3,3 +3,5 @@ flake8-docstrings
 detox
 django
 coverage
+coveralls
+codeclimate-test-reporter
