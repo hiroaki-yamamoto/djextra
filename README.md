@@ -15,7 +15,7 @@ This repository contains additional code for Django.
 
 ## Why I create this?
 Because I love Django, and usually using it. However, I found some essential
-code is lacked for modern web development. For example, you might want to send
+code was lacked for modern web development. For example, you might want to send
 Ajax Payload like this:
 
 ```JSON
@@ -40,7 +40,117 @@ some code to support List validation.
 
 ## How To Use It
 
-### ListField
+### Forms
+
+#### Angular form
+As you can see above sections, you'll need to implement redundant code:
+
+```Python
+from django import forms
+from .models import UserInfo
+
+class UserInfoForm(forms.ModelForm):
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # They are already implemented because UserInfoForm inherit ModelForm
+    # and the target model has the fields.
+    widgets = {
+      "age": forms.NumberInput(attrs={"data-ng-model": "model.age"}),
+      "phone": forms.TextInput(attrs={"data-ng-model": "model.phone"}),
+      "street": forms.TextInput(attrs={"data-ng-model": "model.street"}),
+      "city": forms.TextInput(attrs={"data-ng-model": "model.city"}),
+      "state": forms.TextInput(attrs={"data-ng-model": "model.state"})
+    }
+```
+
+However, you can implement simpler code by using `AngularForm`:
+
+```Python
+from django import forms
+from django_nghelp.forms import AngularForm
+
+class UserInfoForm(AngularForm, forms.ModelForm):
+  ng_model_prefix = "model" # Change this if you want to use other than "model"
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # Automatically generates AngularJS forms.
+```
+
+#### Feature 2: All required forms
+If you'd like to make all fields required on ModelForm, you will re-implement
+entire fields like this:
+
+```Python
+from django import forms
+from .models import UserInfo
+
+class UserInfoForm(forms.ModelForm):
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+
+  # Assume that all fields are optional.
+  age = forms.IntegerField(
+    required=True,
+    widget=forms.NumberInput(attrs={"data-ng-model": "model.age"})
+  )
+  phone = forms.CharField(
+    required=True,
+    widget=forms.TextInput(attrs={"data-ng-model": "model.phone"})
+  )
+  street = forms.CharField(
+    required=True,
+    widget=forms.TextInput(attrs={"data-ng-model": "model.street"})
+  )
+  city = forms.CharField(
+    required=True,
+    widget=forms.TextInput(attrs={"data-ng-model": "model.city"})
+  )
+  state = forms.CharField(
+    required=True,
+    widget=forms.TextInput(attrs={"data-ng-model": "model.state"})
+  )
+```
+
+Moreover, you will not be able to check if the field is proper unless you
+refer Django's code. To reduce this time consumption, I implemented
+`AllReqiuredForm`:
+
+```Python
+from django import forms
+from django_nghelp.forms import AllRequiredForm
+from .models import UserInfo
+
+class UserInfoForm(AllRequiredForm, forms.ModelForm):
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # Assume that all fields are optional.
+```
+
+By using `AllRequiredForm`, you can reduce your LOC like above. Of course,
+you can put optional field as exceptions like this:
+
+```Python
+from django import forms
+from django_nghelp.forms import AllRequiredForm
+from .models import UserInfo
+
+class UserInfoForm(AllRequiredForm, forms.ModelForm):
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # Assume that all fields are optional.
+    # By specifying optional, the specified fields won't
+    # become a required field.
+    optional = ("phone", )
+```
+
+### Form Fields
+
+#### ListField
 ListField is used to handle a list of values like above example.
 To use ListField, you can write a form like this:
 
@@ -60,6 +170,44 @@ class ExampleForm(forms.Form):
 Then, Inputting the data as usual, the validation will start.
 If you don't specify `field` keyword argument, `django.forms.CharField` object
 is specified.
+
+### Widgets
+
+#### Widgets for Angular Materials
+
+If you like [Material Design], you'd also like to use [Angular Material], but
+as you can see the doc. the components are using special tags. For example,
+`select` and `option` input controllers should be replaced with `mdSelect` and
+`mdOption` and they are not provided by built-in widgets.
+
+This widget provides the widgets:
+
+```Python
+from django import forms
+from django_nghelp.forms import AngularForm
+from django_nghelp.widgets import (
+  MDSelect, MDMultiSelect, MDDatePicker, MDDateSelect, MDCheckBox
+)
+
+from .models import ExampleModel
+
+class ExampleForm(AngularForm, forms.ModelForm):
+  class Meta(object):
+    model = ExampleModel
+    exclude = ("secret_field", )
+    widgets = {
+      "start_since": MDDateSelect(),
+      "available_date": MDDatePicker(),
+      "shape": MDSelect(choices=(
+        ("F", "Fat"), ("N": "Normal"), ("T", "Thin")
+      )),
+      "needs_fill": MDCheckBox("Fill with border color?")
+    }
+```
+
+[Material Design]: https://material.google.com/
+[Angular Material]: https://material.angularjs.org
+
 
 ## Contribution
 Contribution of code is welcome, and the code is tested with tox. Before
