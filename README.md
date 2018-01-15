@@ -68,7 +68,7 @@ However, you can implement simpler code by using `AngularForm`:
 
 ```Python
 from django import forms
-from django_nghelp.forms import AngularForm
+from djextra.forms.angular1 import AngularForm
 
 class UserInfoForm(AngularForm, forms.ModelForm):
   ng_model_prefix = "model" # Change this if you want to use other than "model"
@@ -120,7 +120,7 @@ refer Django's code. To reduce this time consumption, I implemented
 
 ```Python
 from django import forms
-from django_nghelp.forms import AllRequiredForm
+from djextra.forms.angular1 import AllRequiredForm
 from .models import UserInfo
 
 class UserInfoForm(AllRequiredForm, forms.ModelForm):
@@ -135,7 +135,7 @@ you can put optional field as exceptions like this:
 
 ```Python
 from django import forms
-from django_nghelp.forms import AllRequiredForm
+from djextra.forms.angular1 import AllRequiredForm
 from .models import UserInfo
 
 class UserInfoForm(AllRequiredForm, forms.ModelForm):
@@ -184,9 +184,8 @@ This widget provides the widgets:
 
 ```Python
 from django import forms
-from django_nghelp.forms import AngularForm
-from django_nghelp.widgets import (
-  MDSelect, MDMultiSelect, MDDatePicker, MDDateSelect, MDCheckBox
+from djextra.forms.angular1 import (
+  AngularForm, MDSelect, MDMultiSelect, MDDatePicker, MDDateSelect, MDCheckBox
 )
 
 from .models import ExampleModel
