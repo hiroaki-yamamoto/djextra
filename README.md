@@ -78,7 +78,62 @@ class UserInfoForm(AngularForm, forms.ModelForm):
     # Automatically generates AngularJS forms.
 ```
 
-#### Feature 2: All required forms
+##### Data binding between AngularJS and Django
+If you want put the value to scope model on initialization, you might have 2 ways:
+
+1. Serialize your model into json by using `json.dumps` and
+  `django.forms.model_to_dict`
+2. Set `handle_ng_init` meta attribute
+
+The first one is very clear, convert your model into dict with
+`django.forms.model_to_dict`, and serialize the dict into JSON, and finally
+put the text as `data-ng-init` to the form like this:
+
+```HTML
+<form data-ng-init="model = {{ view.model_dict | tojson }}">
+  <!-- bla bla bla bla... -->
+</form>
+```
+
+The second one is simple; just set `handle_ng_init` Meta attribute of the form to
+`True` like this:
+
+```Python
+from django import forms
+from djextra.forms.angular1 import AngularForm
+
+class UserInfoForm(AngularForm, forms.ModelForm):
+  ng_model_prefix = "model" # Change this if you want to use other than "model"
+  handle_ng_init = True
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # Automatically generates AngularJS forms.
+```
+
+If you want to specify what value to be set, you can use `ng_init_format_func`
+meta attribute like this:
+
+```Python
+from django import forms
+from djextra.forms.angular1 import AngularForm
+
+class UserInfoForm(AngularForm, forms.ModelForm):
+  ng_model_prefix = "model" # Change this if you want to use other than "model"
+  handle_ng_init = True
+  ng_init_format_func = {
+    "age": lambda value: ("{} years old").format(value)
+  }
+  class Meta(object):
+    model = UserInfo
+    exclude = ("2fa_secret", )
+    # Automatically generates AngularJS forms.
+```
+
+However, as you know, server-side is quite different from client side, so **to
+keep that `age` is formatted, you might also need to write client-side code.**
+
+#### All required forms
 If you'd like to make all fields required on ModelForm, you will re-implement
 entire fields like this:
 
@@ -148,9 +203,101 @@ class UserInfoForm(AllRequiredForm, forms.ModelForm):
     optional = ("phone", )
 ```
 
+#### FieldAttributeForm
+
+When you set attribute, especially with `ModelForm`, you might need to re-set
+widget with `widget` Meta attribute like this:
+
+```Python
+from django.db import models as db
+from django import forms
+
+
+class NamePrice(db.Model):
+  name = db.CharField()
+  price = db.IntegerField()
+
+
+class NameDescForm(forms.ModelForm):
+  class Meta(object):
+    model = NamePrice
+    exclude = ("id", )
+    widgets = {
+      "price": forms.NumberInput(attrs={"max": "100"})
+    }
+```
+
+This is okay when you know what widget is used and attribute `max` is the
+fixed value. However, if you don't know what widget is used, or `max` is
+the dynamic value by the server, Django might not have suitable solution.
+To solve this problem, djextra has a form named `FieldAttributeForm` and
+you can use it like this:
+
+```Python
+from django.db import models as db
+from django import forms
+
+from django.conf import settings
+
+
+class NamePrice(db.Model):
+  name = db.CharField()
+  price = db.IntegerField()
+
+
+class NameDescForm(FieldAttributeForm, forms.ModelForm):
+  class Meta(object):
+    model = NamePrice
+    exclude = ("id", )
+    fld_attrs = {
+        "price": {
+            # The point is the attribute can be callable.
+            "max": lambda form, fld, name, value: 100 if value else "",
+            "min": "0"
+        },
+    }
+```
+
+In addition to this, `FieldAttributeForm` can set attributes that can be applied
+to all the fields by using `common_attrs` meta attribute:
+
+```Python
+from django.db import models as db
+from django import forms
+
+from django.conf import settings
+
+
+class NamePrice(db.Model):
+  name = db.CharField()
+  price = db.IntegerField()
+
+
+class NameDescForm(FieldAttributeForm, forms.ModelForm):
+  class Meta(object):
+    model = NamePrice
+    exclude = ("id", )
+    common_attrs = {
+      # Also it can be callable.
+      "data-on-delay": lambda form, fld, name, value: (
+        "delay('{}',{})"
+      ).format(
+        name, value
+      ),
+      "data-on-load": "test()",
+    }
+    fld_attrs = {
+        "price": {
+            "max": lambda form, fld, name, value: 100 if value else "",
+            "min": 0
+        },
+    }
+```
+
 ### Form Fields
 
 #### ListField
+
 ListField is used to handle a list of values like above example.
 To use ListField, you can write a form like this:
 
