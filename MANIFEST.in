@@ -1,0 +1,2 @@
+recursive-include djextra/forms/angular1/widgets/jinja2 *
+recursive-exclude tests *
