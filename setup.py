@@ -5,7 +5,7 @@
 import sys
 from setuptools import setup, find_packages
 
-dependencies = ["django>=1.11"]
+dependencies = ["django>=1.11", "jinja2"]
 name = "djextra"
 desc = "Additional Functions for Django"
 license = "MIT"

@@ -1,0 +1,6 @@
+<md-checkbox data-name="{{ widget.name }}"{% if widget.value %} data-value="{{ widget.value }}"{% endif %}{% include('./attrs.html') %}>
+  {{ widget.label }}
+{% if widget.help_text -%}
+  <md-tooltip>{{ widget.help_text }}</md-tooltip>
+{% endif -%}
+</md-checkbox>
