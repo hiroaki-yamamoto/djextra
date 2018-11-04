@@ -16,11 +16,11 @@ version = "[VERSION]"
 author = "Hiroaki Yamamoto"
 author_email = "hiroaki@hysoftware.net"
 
-if sys.version_info < (2, 7):
-    raise RuntimeError("Not supported on earlier then python 2.7.")
+if sys.version_info < (3, 6):
+    raise RuntimeError("Not supported on earlier then python 3.6.")
 
 try:
-    with open('README.rst') as readme:
+    with open('README.md') as readme:
         long_desc = readme.read()
 except Exception:
     long_desc = None
@@ -30,6 +30,7 @@ setup(
     version=version,
     description=desc,
     long_description=long_desc,
+    long_description_content_type="text/markdown",
     packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=dependencies,
@@ -41,9 +42,6 @@ setup(
     url=url,
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.5",
         "Framework :: Django :: 2.0",
-        "Framework :: Django :: 1.11",
     ]
 )
