@@ -1,14 +1,14 @@
 # Additional code for Django
 
-[![Travis CI Image]][Travis CI Link] [![Coveralls Image]][Coveralls Link]
+[![Travis CI Image]][Travis CI Link] [![Test Coverage]][Test Coverage Link]
 [![Code Climate Maintainability Check Image]][Code Climate Maintainability Check Link]
 
 [Travis CI Image]: https://travis-ci.org/hiroaki-yamamoto/djextra.svg?branch=master
 [Travis CI Link]: https://travis-ci.org/hiroaki-yamamoto/djextra
 [Coveralls Image]: https://coveralls.io/repos/github/hiroaki-yamamoto/djextra/badge.svg?branch=master
 [Coveralls Link]: https://coveralls.io/github/hiroaki-yamamoto/djextra?branch=master
-[Code Climate Maintainability Check Image]: https://api.codeclimate.com/v1/badges/1ed2f1c354e6357d711c/maintainability
-[Code Climate Maintainability Check Link]: https://codeclimate.com/github/hiroaki-yamamoto/djextra/maintainability
+[Test Coverage]: https://api.codeclimate.com/v1/badges/1ed2f1c354e6357d711c/test_coverage
+[Test Coverage Link]: https://codeclimate.com/github/hiroaki-yamamoto/djextra/test_coverage
 
 ## What this?
 This repository contains additional code for Django.
