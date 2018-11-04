@@ -15,13 +15,13 @@ class MDCheckBox(BaseWidget, forms.CheckboxInput):
 
     def __init__(self, label="", help_text="", *args, **kwargs):
         """Init the instance."""
-        super(MDCheckBox, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.label = label
         self.help_text = help_text
 
     def get_context(self, name, value, attrs):
         """Override get_context."""
-        ret = super(MDCheckBox, self).get_context(name, value, attrs)
+        ret = super().get_context(name, value, attrs)
         if "checked" in ret["widget"]["attrs"]:
             ret["widget"]["attrs"]["data-checked"] = \
                 ret["widget"]["attrs"].pop("checked")

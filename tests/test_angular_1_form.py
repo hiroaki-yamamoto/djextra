@@ -117,30 +117,25 @@ class AngularFormHasValueTest(TestCase):
         if isinstance(fld, forms.IntegerField):
             return random.randint(0, 10)
         if name == "name3":
-            return self.class_value_cls(("Test Value {}").format(name))
-        return ("Test Value {}").format(name)
+            return self.class_value_cls(f"Test Value {name}")
+        return f"Test Value {name}"
 
     def test_get_context(self):
         """The returned value from get_context should have ng-init event."""
         for (name, fld) in self.form.fields.items():
             value = self.gen_value(name, fld)
             context = fld.widget.get_context(name, value, {})["widget"]
-            expected = ("{}.{} = {}").format(
-                self.form.ng_model_prefix,
-                name, json.dumps(
-                    fld.widget.format_value(value)
-                    if isinstance(fld, forms.DateTimeField) else
-                    self.form.Meta.ng_init_format_func[name](value)
-                    if name == "name3" else
-                    value
-                )
+            value = json.dumps(
+                fld.widget.format_value(value)
+                if isinstance(fld, forms.DateTimeField) else
+                self.form.Meta.ng_init_format_func[name](value)
+                if name == "name3" else
+                value
             )
+            expected = f"{self.form.ng_model_prefix}.{name} = {value}"
             self.assertEqual(
                 expected, context["attrs"]["data-ng-init"],
-                (
-                    "{} is different ng-init event. "
-                    "Expected: {}, Actual: {}"
-                ).format(
-                    name, expected, context["attrs"]["data-ng-init"]
-                )
+                f"{name} is different ng-init event. "
+                f"Expected: {expected}, "
+                f'Actual: {context["attrs"]["data-ng-init"]}'
             )

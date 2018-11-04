@@ -14,7 +14,7 @@ class MDMultiSelect(MDSelect, SelectMultiple):
 
     def get_context(self, name, value, attrs):
         """Override get_context."""
-        context = super(MDMultiSelect, self).get_context(name, value, attrs)
+        context = super().get_context(name, value, attrs)
         context['widget']['attrs']['data-multiple'] = \
             bool(context['widget']['attrs'].pop("multiple"))
         return context

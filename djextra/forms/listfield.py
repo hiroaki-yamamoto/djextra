@@ -17,7 +17,7 @@ class ListField(forms.Field):
     def __init__(self, *args, **kwargs):
         """Init."""
         self.field = kwargs.pop("field", None) or forms.CharField()
-        super(ListField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def to_python(self, value):
         """Normalize the value into python format with specified field."""

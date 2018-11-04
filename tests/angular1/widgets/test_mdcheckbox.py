@@ -27,9 +27,8 @@ class SimpleMDCheckBoxTest(TestCase):
     def test_render(self):
         """Test render invokation."""
         result = self.widget.render("result", None)
-        data = (
-            "<md-checkbox data-name=\"result\"> {} </md-checkbox>"
-        ).format(self.label)
+        data = \
+            f"<md-checkbox data-name=\"result\"> {self.label} </md-checkbox>"
         self.assertEqual(htmlmin.minify(result), htmlmin.minify(data))
 
 
@@ -44,9 +43,9 @@ class MDCheckBoxCheckedTest(TestCase):
     def test_render(self):
         """Test render invokation."""
         result = self.widget.render("result", True)
-        data = (
-            "<md-checkbox data-name=\"result\" data-checked> {} </md-checkbox>"
-        ).format(self.label)
+        data = \
+            "<md-checkbox data-name=\"result\" data-checked> "\
+            f"{self.label} </md-checkbox>"
         self.assertEqual(htmlmin.minify(result), htmlmin.minify(data))
 
 
@@ -61,10 +60,9 @@ class MDCheckBoxHasClassTest(TestCase):
     def test_render(self):
         """Test render invokation."""
         result = self.widget.render("result", "UWAAAAAHHH")
-        data = (
-            "<md-checkbox data-name=\"result\" data-value=\"UWAAAAAHHH\" "
-            "data-checked> {} </md-checkbox>"
-        ).format(self.label)
+        data = \
+            "<md-checkbox data-name=\"result\" data-value=\"UWAAAAAHHH\""\
+            f"data-checked> {self.label} </md-checkbox>"
         self.assertEqual(htmlmin.minify(result), htmlmin.minify(data))
 
 
@@ -81,8 +79,8 @@ class MDCheckBoxHasHelpTextTest(TestCase):
         """Test render invokation."""
         result = self.widget.render("result", None)
         data = (
-            "<md-checkbox data-name=\"result\">"
-            " %s <md-tooltip>%s</md-tooltip> "
+            f"<md-checkbox data-name=\"result\"> {self.label} "
+            f"<md-tooltip>{self.help_text}</md-tooltip> "
             "</md-checkbox>"
-        ) % (self.label, self.help_text)
+        )
         self.assertEqual(htmlmin.minify(result), htmlmin.minify(data))

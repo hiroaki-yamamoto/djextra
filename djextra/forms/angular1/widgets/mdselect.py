@@ -16,6 +16,6 @@ class MDSelect(BaseWidget, Select):
 
     def __init__(self, disable_select=False, *args, **kwargs):
         """Init the class."""
-        super(MDSelect, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.disable_select = disable_select
         self.checked_attribute = {"data-selected": not self.disable_select}

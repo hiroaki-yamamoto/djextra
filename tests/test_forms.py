@@ -57,7 +57,7 @@ class FieldCommonAttributeFormTest(TestCase):
     def test_evaluate(self):
         """Calling get context, the attrs should be evaluated."""
         for name, fld in self.form_instance.fields.items():
-            value = ("test_{}").format(name)
+            value = f"test_{name}"
             widget_attrs = fld.widget.get_context(
                 name, value, {}
             )["widget"]["attrs"]

@@ -24,23 +24,23 @@ class AngularForm(forms.Form):
                     v
                 )
             )
-            attrs["data-ng-init"] = ("{} = {}").format(
-                fld.widget.attrs.get("data-ng-model") or
-                attrs["data-ng-model"], json.dumps(format_func(value))
-            )
+            model_var = \
+                fld.widget.attrs.get("data-ng-model") or attrs["data-ng-model"]
+            attrs["data-ng-init"] = \
+                f"{model_var} = {json.dumps(format_func(value))}"
             return f(name, value, attrs)
         return inside
 
     def __init__(self, *args, **kwargs):
         """Init the function."""
-        super(AngularForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         metaclass = getattr(self, "Meta", type("Meta", (object,), {}))
         handle_ng_init = getattr(metaclass, "handle_ng_init", False)
         ng_init_format_func = getattr(metaclass, "ng_init_format_func", {})
         self.ng_model_prefix = getattr(metaclass, "ng_model_prefix", "model")
 
         for (name, field) in self.fields.items():
-            model = ("{}.{}").format(self.ng_model_prefix, name)
+            model = f"{self.ng_model_prefix}.{name}"
             field.widget.attrs.setdefault("data-ng-model", model)
             if handle_ng_init:
                 if name in ng_init_format_func:

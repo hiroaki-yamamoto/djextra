@@ -87,7 +87,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.{}'.format(validator),
+        'NAME': f'django.contrib.auth.password_validation.{validator}',
     } for validator in [
         "UserAttributeSimilarityValidator", "MinimumLengthValidator",
         "CommonPasswordValidator", "NumericPasswordValidator"

@@ -122,7 +122,7 @@ class UserInfoForm(AngularForm, forms.ModelForm):
   ng_model_prefix = "model" # Change this if you want to use other than "model"
   handle_ng_init = True
   ng_init_format_func = {
-    "age": lambda value: ("{} years old").format(value)
+    "age": lambda value: f"{value} years old"
   }
   class Meta(object):
     model = UserInfo
@@ -280,9 +280,7 @@ class NameDescForm(FieldAttributeForm, forms.ModelForm):
     common_attrs = {
       # Also it can be callable.
       "data-on-delay": lambda form, fld, name, value: (
-        "delay('{}',{})"
-      ).format(
-        name, value
+        f"delay('{name}',{value})"
       ),
       "data-on-load": "test()",
     }

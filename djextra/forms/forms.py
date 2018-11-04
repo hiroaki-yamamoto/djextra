@@ -12,7 +12,7 @@ class AllRequiredForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Init field."""
-        super(AllRequiredForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         optional_fields = getattr(
             getattr(self, "Meta", type("Meta", (object,), {})()),
             "optional", None
@@ -75,7 +75,7 @@ class FieldAttributeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Init."""
-        super(FieldAttributeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # print(self.fields)
         for name, fld in self.fields.items():
             tmp = fld.widget.get_context

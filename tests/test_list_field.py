@@ -133,15 +133,10 @@ class ListFieldCastFailureTest(TestCase):
     def test_error(self):
         """Should raise an error."""
         self.assertFalse(self.form.is_valid())
+        errmsg = \
+            self.form.fields["numbers"].field.error_messages["invalid"]
         self.assertEqual(dict(self.form.errors), {
-            "numbers": [
-                ("Index 2: {}").format(
-                    self.form.fields["numbers"].field.error_messages["invalid"]
-                ),
-                ("Index 3: {}").format(
-                    self.form.fields["numbers"].field.error_messages["invalid"]
-                )
-            ]
+            "numbers": [f"Index 2: {errmsg}", f"Index 3: {errmsg}"]
         })
 
 
@@ -170,13 +165,8 @@ class ListFieldValidationErrorTest(TestCase):
     def test_error(self):
         """Should raise an error."""
         self.assertFalse(self.form.is_valid())
+        errmsg = \
+            self.form.fields["emails"].field.validators[0].message
         self.assertEqual(dict(self.form.errors), {
-            "emails": [
-                ("Index 2: {}").format(
-                    self.form.fields["emails"].field.validators[0].message
-                ),
-                ("Index 3: {}").format(
-                    self.form.fields["emails"].field.validators[0].message
-                )
-            ]
+            "emails": [f"Index 2: {errmsg}", f"Index 3: {errmsg}"]
         })
