@@ -27,7 +27,7 @@ pycodestyle==2.4.0        # via flake8
 pydocstyle==3.0.0         # via flake8-docstrings
 pyflakes==2.0.0           # via flake8
 pytz==2018.7              # via django
-requests==2.20.0          # via codeclimate-test-reporter, coveralls
+requests==2.20.1          # via codeclimate-test-reporter, coveralls
 six==1.11.0               # via eventlet, pydocstyle, tox
 snowballstemmer==1.2.1    # via pydocstyle
 toml==0.10.0               # via tox
