@@ -7,7 +7,7 @@
 certifi==2018.10.15        # via requests
 chardet==3.0.4            # via requests
 codeclimate-test-reporter==0.2.3
-coverage==4.5.1
+coverage==4.5.2
 coveralls==1.5.1
 detox==0.18
 django==2.1.3
