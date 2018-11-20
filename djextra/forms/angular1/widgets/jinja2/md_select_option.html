@@ -1,3 +1,3 @@
-<md-option{% if widget.value %} data-value="{{ widget.value }}"{% endif %}{% include "./attrs.html" -%}>
+<md-option data-value="{{ widget.value or '' }}"{% include "./attrs.html" -%}>
 {{ widget.label }}
 </md-option>

@@ -27,7 +27,7 @@ class SimpleMDSelectTest(TestCase):
             "<md-select data-name=\"result\">"
             "<md-option data-value=\"test\">Test</md-option>"
             "<md-option data-value=\"test2\">Test2</md-option>"
-            "<md-option data-selected>Test3</md-option>"
+            "<md-option data-value=\"\" data-selected>Test3</md-option>"
             "</md-select>"
         )
         self.assertEqual(result, data)
@@ -40,7 +40,7 @@ class SimpleMDSelectTest(TestCase):
             "<md-option data-value=\"test\" data-selected>"
             "Test</md-option>"
             "<md-option data-value=\"test2\">Test2</md-option>"
-            "<md-option>Test3</md-option>"
+            "<md-option data-value=\"\">Test3</md-option>"
             "</md-select>"
         )
         self.assertEqual(result, data)
@@ -52,7 +52,7 @@ class SimpleMDSelectTest(TestCase):
             "<md-select data-name=\"result\">"
             "<md-option data-value=\"test\">Test</md-option>"
             "<md-option data-value=\"test2\">Test2</md-option>"
-            "<md-option>Test3</md-option>"
+            "<md-option data-value=\"\">Test3</md-option>"
             "</md-select>"
         )
         self.assertEqual(result, data)
@@ -118,7 +118,7 @@ class MDSelectDisableSelectTest(TestCase):
             "<md-select data-name=\"result\">"
             "<md-option data-value=\"test\">Test</md-option>"
             "<md-option data-value=\"test2\">Test2</md-option>"
-            "<md-option>Test3</md-option>"
+            "<md-option data-value=\"\">Test3</md-option>"
             "</md-select>"
         )
         self.assertEqual(result, data)
@@ -130,7 +130,7 @@ class MDSelectDisableSelectTest(TestCase):
             "<md-select data-name=\"result\">"
             "<md-option data-value=\"test\">Test</md-option>"
             "<md-option data-value=\"test2\">Test2</md-option>"
-            "<md-option>Test3</md-option>"
+            "<md-option data-value=\"\">Test3</md-option>"
             "</md-select>"
         )
         self.assertEqual(result, data)
