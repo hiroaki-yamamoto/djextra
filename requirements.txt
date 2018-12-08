@@ -11,7 +11,7 @@ coverage==4.5.2
 coveralls==1.5.1
 detox==0.18
 django==2.1.4
-dnspython==1.15.0         # via eventlet
+dnspython==1.16.0         # via eventlet
 docopt==0.6.2             # via coveralls
 eventlet==0.24.1          # via detox
 flake8-docstrings==1.3.0
