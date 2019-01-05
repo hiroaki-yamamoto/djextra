@@ -10,7 +10,7 @@ codeclimate-test-reporter==0.2.3
 coverage==4.5.2
 coveralls==1.5.1
 detox==0.18
-django==2.1.4
+django==2.1.5
 dnspython==1.16.0         # via eventlet
 docopt==0.6.2             # via coveralls
 eventlet==0.24.1          # via detox
@@ -33,4 +33,4 @@ snowballstemmer==1.2.1    # via pydocstyle
 toml==0.10.0               # via tox
 tox==3.6.1                # via detox
 urllib3==1.24.1             # via requests
-virtualenv==16.1.0        # via tox
+virtualenv==16.2.0        # via tox
