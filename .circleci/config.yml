@@ -51,7 +51,7 @@ jobs:
           at: ../
       - run:
           name: "Generating version info"
-          command: "echo ${CIRCLE_TAG} > VERSION"
+          command: "echo -n ${CIRCLE_TAG} > VERSION"
       - run:
           name: "Generate the package"
           command: "source ./venv/bin/activate && python setup.py sdist"
