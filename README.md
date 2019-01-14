@@ -3,8 +3,8 @@
 [![CI Image]][CI Link] [![Test Coverage]][Test Coverage Link]
 [![Maintainability]][Maintainability Link]
 
-[Travis CI Image]: https://circleci.com/gh/hiroaki-yamamoto/djextra.svg?style=svg
-[Travis CI Link]: https://circleci.com/gh/hiroaki-yamamoto/djextra
+[CI Image]: https://circleci.com/gh/hiroaki-yamamoto/djextra.svg?style=svg
+[CI Link]: https://circleci.com/gh/hiroaki-yamamoto/djextra
 [Test Coverage]: https://api.codeclimate.com/v1/badges/1ed2f1c354e6357d711c/test_coverage
 [Test Coverage Link]: https://codeclimate.com/github/hiroaki-yamamoto/djextra/test_coverage
 [Maintainability]: https://api.codeclimate.com/v1/badges/1ed2f1c354e6357d711c/maintainability
