@@ -16,7 +16,8 @@ jobs:
           name: "Install Dependencies"
           command: |
             source ./venv/bin/activate &&
-            pip install -r requirements.txt
+            pip install -r requirements.txt &&
+            pip install twine bump
       - save_cache:
           key: djextra-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
@@ -24,21 +25,23 @@ jobs:
       - run:
           name: "Test"
           command: source ./venv/bin/activate && tox
-      - run:
-          name: "Build"
-          command: "python setup.py sdist bdist_wheel"
       - persist_to_workspace:
-          root: ./
+          root: ../
           paths:
-            - venv
-            - dist
+            - djextra
   deploy:
     docker:
       - image: python:latest
     working_directory: ~/djextra
     steps:
       - attach_workspace:
-          at: ./
+          at: ../
+      - run:
+          name: "Generating version info"
+          command: "cat ${CIRCLE_TAG} > VERSION"
+      - run:
+          name: "Generate the package"
+          command: "python setup.py sdist bdist_wheel"
       - run:
           name: "Deploy"
           command: "source ./venv/bin/activate && twine upload dist/*"

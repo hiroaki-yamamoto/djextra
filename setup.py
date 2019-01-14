@@ -3,6 +3,7 @@
 """Setup script."""
 
 import sys
+import os.path
 from setuptools import setup, find_packages
 
 dependencies = ["django>=1.11", "jinja2"]
@@ -11,7 +12,12 @@ desc = "Additional Functions for Django"
 license = "MIT"
 url = "https://github.com/hiroaki-yamamoto/djextra"
 keywords = "Django"
-version = "[VERSION]"
+version = "0.0.0"
+version_file = path.join(path.abspath(path.dirname(__file__)), "VERSION")
+
+if path.exists(version_file):
+    with open(version_file) as v:
+        version = v.read()
 
 author = "Hiroaki Yamamoto"
 author_email = "hiroaki@hysoftware.net"

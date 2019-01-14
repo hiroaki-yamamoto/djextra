@@ -3,4 +3,3 @@ flake8-docstrings
 detox
 django
 coverage
-twine
