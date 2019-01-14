@@ -63,11 +63,6 @@ workflows:
       - build:
           filters:
             << : *dev_filter
-      - deploy:
-          requires:
-            - build
-          filters:
-            << : *dev_filter
   version_tag:
     jobs:
       - build:
