@@ -14,7 +14,9 @@ jobs:
           command: "python -m venv venv"
       - run:
           name: "Download Code Climate App"
-          command: curl -o ../cc-test-reporter -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+          command: |
+            curl -o ../cc-test-reporter -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 &&
+            chmod +x ../cc-test-reporter
       - run:
           name: "Hook before-build for cc reporter"
           command: "../cc-test-reporter before-build"
