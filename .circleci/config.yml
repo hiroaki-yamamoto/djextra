@@ -54,7 +54,7 @@ jobs:
           command: "echo ${CIRCLE_TAG} > VERSION"
       - run:
           name: "Generate the package"
-          command: "python setup.py sdist bdist_wheel"
+          command: "source ./venv/bin/activate && python setup.py sdist"
       - run:
           name: "Deploy"
           command: "source ./venv/bin/activate && twine upload dist/*"
