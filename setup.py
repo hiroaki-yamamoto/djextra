@@ -3,7 +3,7 @@
 """Setup script."""
 
 import sys
-import os.path
+import os.path as path
 from setuptools import setup, find_packages
 
 dependencies = ["django>=1.11", "jinja2"]
