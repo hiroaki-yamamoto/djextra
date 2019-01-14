@@ -13,6 +13,12 @@ jobs:
           name: "Run Venv"
           command: "python -m venv venv"
       - run:
+          name: "Download Code Climate App"
+          command: curl -o ../cc-test-reporter -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+      - run:
+          name: "Hook before-build for cc reporter"
+          command: "../cc-test-reporter before-build"
+      - run:
           name: "Install Dependencies"
           command: |
             source ./venv/bin/activate &&
@@ -24,7 +30,13 @@ jobs:
             - "./venv"
       - run:
           name: "Test"
-          command: source ./venv/bin/activate && tox
+          command: source ./venv/bin/activate && tox; export EXIT_CODE=${?}
+      - run:
+          name: "Generate coverage data to upload to cc"
+          command: coverage erase && coverage combine && coverage xml
+      - run:
+          name: "Upload the coverage"
+          command: "../cc-test-reporter after-build --exit-code $EXIT_CODE -t coverage.py"
       - persist_to_workspace:
           root: ../
           paths:
