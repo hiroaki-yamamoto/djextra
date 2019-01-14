@@ -32,10 +32,15 @@ jobs:
             - "./venv"
       - run:
           name: "Test"
-          command: source ./venv/bin/activate && tox; export EXIT_CODE=${?}
+          command: |
+            source ./venv/bin/activate && tox; export EXIT_CODE=${?};
       - run:
           name: "Generate coverage data to upload to cc"
-          command: coverage erase && coverage combine && coverage xml
+          command: |
+            source ./venv/bin/activate &&
+            coverage erase &&
+            coverage combine &&
+            coverage xml
       - run:
           name: "Upload the coverage"
           command: "../cc-test-reporter after-build --exit-code $EXIT_CODE -t coverage.py"
