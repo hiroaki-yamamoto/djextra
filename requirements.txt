@@ -35,7 +35,7 @@ requests==2.21.0          # via requests-toolbelt, twine
 six==1.12.0               # via bleach, eventlet, pydocstyle, readme-renderer, tox
 snowballstemmer==1.2.1    # via pydocstyle
 toml==0.10.0              # via tox
-tox==3.6.1                # via detox
+tox==3.7.0                # via detox
 tqdm==4.29.1              # via twine
 twine==1.12.1
 urllib3==1.24.1           # via requests
