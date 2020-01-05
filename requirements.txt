@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-coverage==5.0.1
+coverage==5.0.2
 django==3.0.2
 filelock==3.0.12          # via tox
 flake8-docstrings==1.5.0
